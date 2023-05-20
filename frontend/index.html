@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        const handleSubmitUser = (event) => {
+            event.preventDefault(); // Prevent form submission
+
+            // Retrieve form values
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const age = document.getElementById('age').value;
+
+            const msg = document.getElementById('msg');
+
+            // Perform further actions with the form data
+            // ...
+            fetch('http://localhost:3005', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ firstName, lastName, age })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    // Create a string representation of the response data
+                    const responseString = JSON.stringify(data);
+
+                    // Display the response in the HTML
+                    msg.innerHTML = `<pre>${responseString}</pre>`;
+                })
+                .catch(err => {
+                    console.error(err);
+                    msg.innerHTML = 'An error occurred';
+                });
+
+            // Reset form after submission
+            event.target.reset();
+        };
+
+
+        const handleGetAllAuthors = () => {
+            // Retrieve all authors
+            // ...
+            const allAuthors = document.getElementById('allAuthors');
+
+            fetch('http://localhost:3005')
+                .then(res => res.json())
+                .then(data => {
+                    allAuthors.innerHTML = data;
+                })
+                .catch(err => {
+                    console.error(err);
+                    allAuthors.innerHTML = 'An error occurred';
+                });
+        };
+    </script>
+</head>
+
+<body>
+    <form onsubmit="handleSubmitUser(event)">
+        <input id="firstName" type="text" placeholder="First Name">
+        <input id="lastName" type="text" placeholder="Last Name">
+        <input id="age" type="number" placeholder="Age">
+        <input type="submit" value="Submit">
+    </form>
+    <form action="">
+        <input type="text" placeholder="author id">
+        <input type="text" placeholder="title">
+        <input type="number" placeholder="fans ids">
+        <input type="submit" value="Submit">
+    </form>
+    <form action="">
+        <input type="text" placeholder="story name">
+        <input type="submit" value="Submit">
+    </form>
+
+    <button onclick="handleGetAllAuthors()">Get all Authors</button>
+
+    <div id="msg"></div>
+    <div id="allAuthors"></div>
+</body>
+
+</html>
