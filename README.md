@@ -1,1 +1,3 @@
-This is a readme file.
+BLOG-DEV
+
+use 'npm-start' to run this app.
